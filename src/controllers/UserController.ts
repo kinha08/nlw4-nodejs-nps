@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../repositories/UserRepository';
 import * as yup from 'yup';
+import { AppError } from '../errors/AppError';
 
 
 class UserController {
@@ -32,9 +33,7 @@ class UserController {
         })
 
         if(userAlreadyExists) {
-            return response.status(400).json({
-                error: "Usuario já cadastrado!"
-            })
+            throw new AppError("User already signed up")
         }
 
         const user = usersRepository.create({
